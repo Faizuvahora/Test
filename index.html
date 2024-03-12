@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flight Seat Booking</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .seat {
+      width: 40px;
+      height: 40px;
+      margin: 5px;
+      border: 1px solid #ccc;
+      display: inline-block;
+      text-align: center;
+      line-height: 40px;
+      cursor: pointer;
+    }
+    .seat.available {
+      background-color: #c3e6cb;
+    }
+    .seat.booked {
+      background-color: #f5c6cb;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 class="mt-4">Flight Seat Booking</h2>
+    <div id="seat-map" class="mt-4"></div>
+    <button id="book-seat-btn" class="btn btn-primary mt-3">Book Selected Seats</button>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Assuming 5 rows and 8 columns of seats
+      var numRows = 5;
+      var numCols = 8;
+      
+      // Generate seat map
+      var seatMap = "";
+      for (var i = 0; i < numRows; i++) {
+        for (var j = 0; j < numCols; j++) {
+          seatMap += "<div class='seat available' data-row='" + i + "' data-col='" + j + "'>" + String.fromCharCode(65 + i) + (j + 1) + "</div>";
+        }
+        seatMap += "<br>";
+      }
+      $("#seat-map").html(seatMap);
+
+      // Handle seat selection
+      $(".seat").click(function() {
+        $(this).toggleClass("selected");
+      });
+
+      // Handle booking button click
+      $("#book-seat-btn").click(function() {
+        var selectedSeats = $(".seat.selected");
+        if (selectedSeats.length > 0) {
+          var seatNumbers = selectedSeats.map(function() {
+            return $(this).text();
+          }).get();
+          alert("Booked seats: " + seatNumbers.join(", "));
+          // Here you can add further logic to handle booking confirmation, update server, etc.
+        } else {
+          alert("Please select at least one seat.");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
